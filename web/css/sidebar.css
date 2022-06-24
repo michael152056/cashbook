@@ -1,0 +1,120 @@
+.main-sidebar{
+    background-image: url(../images/fondo_menu.png);
+    background-clip: initial;
+    background-color: rgb(5, 30, 52);
+}
+
+
+.sidebar{
+    overflow: hidden;
+}
+.brand-image2{
+    width: 18em !important;
+    height: 10em !important;
+    display: initial;
+}
+
+.sidebar-collapse .brand-image2{
+ display: none;
+}
+.sidebar-collapse .brand-image-mini {
+   margin-top: 2em;
+   display: initial !important;
+}
+
+.sidebar-focused .brand-image2{
+    display: initial !important;
+}
+
+.sidebar-focused .brand-image-mini{
+    display: none !important;
+}
+
+.main-sidebar:hover .brand-image2{
+    display: initial !important;
+}
+
+.main-sidebar:hover .brand-image-mini{
+    display: none !important;
+}
+
+.brand-image2{
+    display: initial;
+}
+
+
+
+.sidebar .nav-link{
+    color: white !important;
+    font-size: 14px;
+    width: 100% !important;
+    border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    -ms-border-radius: 5px !important;
+    -o-border-radius: 5px !important;
+}
+
+.sidebar .nav > li > a:focus{
+    background: none;
+}
+
+.nav-link:hover{
+    background:black;
+}
+
+.brand-link{
+    border: none !important;
+}
+
+
+.sidebar .nav-item{
+    margin-bottom: 1.5em !important;
+}
+
+.nav-treeview *:not(.nav-treeview .nav-item){
+    margin-left: 0.8em !important;
+   
+}
+
+
+.sidebar .nav-link *{
+    font-size: 14px;
+    font-weight: lighter;
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+}
+
+.sidebar svg:not(.nav-treeview .nav-item svg){
+    fill: white !important;
+    margin-right: 1em;
+}
+
+.nav-treeview .nav-item .right{
+    margin-right: 1.8em;
+}
+
+
+
+.nav-treeview .nav-item svg{
+    fill: white !important;
+}
+
+.pushmenu svg{
+    margin: 1em;
+    cursor: pointer;
+}
+
+/*  .sidebar-collapse aside{
+    width: 6em !important
+} 
+ */
+ .sidebar-collapse .content-wrapper{
+    padding-left: 5em !important;
+} 
+
+
+ .sidebar-collapse .main-header {
+    padding-left: 5em !important;
+} 
+
+

@@ -1,10 +1,13 @@
+/* Table */
+
 .table-blue{
     margin: 40px;
     width: 95%;
     background-color: white !important;
+    box-shadow: 0 0 0 1px rgb(63 63 68 / 5%), 0 1px 2px 0 rgb(63 63 68 / 15%)!important;
 }
 .table-blue td, tr{
-    padding: 6px 24px 6px 16px !important; 
+    padding: 20px !important; 
     font-size: 14px;
     text-align: center;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
@@ -32,12 +35,105 @@
 
 
 .table-blue th{
-background-color: #051E34 !important;
+background-color: #082946 !important;
 font-family: "Roboto", "Helvetica", "Arial", sans-serif;
 font-size: 14px;
 font-weight: 400;
-padding: 6px 24px 6px 16px; 
+padding: 20px !important; 
 }
 .table .thead-dark th{
     border: none;
+}
+/* Paginador */
+
+.pagination{
+    justify-content: right !important;
+    text-align: right;
+    border-radius: 5px;
+    text-align: center;
+    margin-right: 2em ;
+    padding: 0;
+    margin-bottom: 50px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+.pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
+    background: #051E34 ;
+    border: 1px solid #051E34 ;
+    color: white !important;
+
+    text-decoration: none;
+}
+
+.pagination a{
+
+    color:#051E34 !important ;
+    text-align: center;
+    font-size: 18px !important;
+    font-family: sans-serif;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+}
+
+
+
+/* Container */
+
+.container_tools
+{
+    border-radius: 5px;
+    height: 10em;
+    padding: 1.5em;
+    width: 100% !important;
+    box-shadow: 0 0 0 1px rgb(63 63 68 / 5%), 0 1px 2px 0 rgb(63 63 68 / 15%)!important;
+    background: #f5f5f5 !important;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+}
+
+
+
+.search_bar .form-control{
+    height: 3em;
+}
+
+.search_bar{
+    margin: 1.5em;
+}
+
+.btn-pdf{
+    height: 3.5em;
+    background: #c80a0a;
+   
+}
+
+.btn-pdf:hover{
+    background: rgb(129,24,24);
+    background: linear-gradient(32deg, rgba(129,24,24,1) 0%, rgba(200,10,10,1) 65%);
+}
+
+
+.btn-excel{
+    height: 3.5em;
+    background-color: rgba(16,124,65,1);
+}
+
+.btn-excel:hover{
+    background: rgb(24,92,55);
+    background: linear-gradient(32deg, rgba(24,92,55,1) 0%, rgba(16,124,65,1) 65%);
+   
+}
+
+.resultados{
+    height: 7em;
 }
