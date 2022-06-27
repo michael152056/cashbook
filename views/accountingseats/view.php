@@ -12,8 +12,7 @@ use yii\helpers\Url;
 		<div class="panel-toolbar-wrapper pl10 pr10 pt5 pb5">
 			<div class="card-header text-right">
 				<div class="btn-group">
-					<a style="color:white; important!" 
-					role = "modal-remote" title = "Eliminar asiento" data-request-method = "POST" data-toggle = "tooltip" 
+					<a style="color:white important!" role = "modal-remote" title = "Eliminar asiento" data-request-method = "POST" data-toggle = "tooltip" 
             		data-confirm-title = "Estas seguro" data-confirm-message = "Estas seguro de querer eliminar completamente este asiento"
 					class="btn btn-danger btn" href="<?= Url::to(['accountingseats/delete', 'id' => $model->id]) ?>">
 						<span class="fas fa-trash"></span>

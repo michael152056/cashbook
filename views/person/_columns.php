@@ -5,33 +5,35 @@ use yii\helpers\ArrayHelper;
 use kartik\grid\GridView;
 
 return [
-
-
+    ['class' => 'yii\grid\SerialColumn'
+],
+    [
+        'class' => '\kartik\grid\DataColumn',
+        'attribute' => 'cedula',
+        'width' => '170px',
+    ],
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'name',
+        'width' => '300px'
     ],
     [
         'class' => '\kartik\grid\DataColumn',
-        'attribute' => 'commercial_name',
-    ],
-    [
-        'class' => '\kartik\grid\DataColumn',
-        'attribute' => 'ruc',
-        'width' => '150px',
-    ],
+        'attribute' => 'address',
+        'width' => '200px',
+    ]/* ,
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'cedula',
         'width' => '150px',
-    ],
-    [
+    ], */,
+     [
         'attribute' => 'rol',
         'vAlign' => 'middle',
         'value' => function ($model, $key, $index, $widget) {
             $rol = [];
             if ($model->clients) {
-                $rol[]='Ciente';
+                $rol[]='Cliente';
                 
             };
             if ($model->providers) {
@@ -57,9 +59,9 @@ return [
         'filterWidgetOptions' => [
             'pluginOptions' => ['allowClear' => true],
         ],
-        'filterInputOptions' => ['placeholder' => 'Cualquier Rol', 'multiple' => true], // allows multiple authors to be chosen
+        'filterInputOptions' => ['multiple' => true], // allows multiple authors to be chosen
         'format' => 'raw',
-        'width'=>'300px',
+        'width'=>'200px',
     ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
@@ -108,7 +110,7 @@ return [
     [
         'class' => 'kartik\grid\ActionColumn',
         'dropdown' => false,
-        'template' => '{update}',
+        'template' => '<img class="mr-2" src="/images/svg/icons/view-icon.svg"></img> <img  class="mr-2" src="/images/svg/icons/edit-icon.svg"></img> <img  class="mr-2" src="/images/svg/icons/delete-icon.svg"></img> ',
         'vAlign' => 'middle',
         'urlCreator' => function ($action, $model, $key, $index) {
             return Url::to([$action, 'id' => $key]);
@@ -123,6 +125,8 @@ return [
             'data-confirm-title' => 'Are you sure?',
             'data-confirm-message' => 'Are you sure want to delete this item'
         ],
+        'width'=>'150px',
+        
     ],
 
 ];

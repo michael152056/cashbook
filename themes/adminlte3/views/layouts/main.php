@@ -57,7 +57,7 @@ app\assets\AppAsset::register($this);
     <!-- Content Wrapper. Contains page content -->
     <div class="content-wrapper">
         <!-- Content Header (Page header) -->
-        <div class="content-header">
+        <!-- <div class="content-header">
             <div class="container-fluid">
                 <div class="row mb-2">
                     <div class="col-sm-6 mb-3 mt-2">
@@ -70,19 +70,19 @@ app\assets\AppAsset::register($this);
                        
                         ?></h1>
 
-                    </div><!-- /.col -->
+                    </div>
                     <div class="col-sm-6">
                         <?= Breadcrumbs::widget(['links' => isset($this->params['breadcrumbs']) ? $this->params['breadcrumbs'] : [], 'options' => ['class' => 'breadcrumb float-right']]) ?>
                     </div>
                 </div>
-                <!-- /.row -->
-            </div><!-- /.container-fluid -->
-        </div>
+              
+            </div>
+        </div> -->
         <!-- /.content-header -->
 
         <!-- Main content -->
-        <div class="content">
-            <div class="container-fluid">
+        <div class="content ">
+            <div class="container-fluid ">
                 <?= $content ?>
                 <!-- /.row -->
             </div><!-- /.container-fluid -->

@@ -10,6 +10,7 @@ use yii\web\User;
 use app\models\LoginForm;
 use yii\web\Controller;
 use yii\db\Query;
+use yii\widgets\Pjax;
 /**
  * PersonSearch represents the model behind the search form about `app\models\Person`.
  */
@@ -21,9 +22,9 @@ class PersonSearch extends Person
     public function rules()
     {
         return [
-            [['id', 'person_type_id', 'categories_id', 'associated_person', 'institution_id', 'city_id'], 'integer'],
-            [['special_taxpayer', 'foreigner', 'status'], 'boolean'],
-            [['rol', 'ruc', 'cedula', 'name', 'commercial_name', 'phones', 'address', 'emails', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
+           [['id', 'person_type_id', 'categories_id', 'associated_person', 'institution_id', 'city_id'], 'integer'],
+            [['special_taxpayer', 'foreigner', 'status'], 'boolean'], 
+            [[ 'rol', 'ruc',  'cedula', 'name',  'commercial_name', 'phones',  'address' , 'emails', 'created_at', 'updated_at', 'deleted_at'], 'safe'],
         ];
     }
 
@@ -47,41 +48,48 @@ class PersonSearch extends Person
     {
         $sql = new Query;
         $person = Yii::$app->user->identity->person_id;
-        $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
+        $result = $sql->select(['*'])
+        ->from('person')
+        ->where(['id' => $person])
+        ->all();
+
         $institution = $result[0]['institution_id'];
 
         $query1 = new Query;
         $users = array();
         $usersstr = "";
         $us=Users::findOne(["username"=>Yii::$app->user->identity->username]);
-
-        $usuarios = $query1->select(['institution_id'])->from('users, person')->Where('person.id = person_id')->all();
-        if ($usuarios) {
+ 
+         $usuarios = $query1->select(['institution_id'])->from('users, person')->Where('person.id = person_id')->all();
+      if ($usuarios) {
             foreach ($usuarios as $row)
             {
                 $users = $row['institution_id'];
                 $usersstr = $users.",".$usersstr;
             }
-        }
-        $modulos = explode(",", $usersstr);
-        yii::debug($modulos);
+        } 
+         $modulos = explode(",", $usersstr);
+        yii::debug($modulos); 
      
         $query = Person::find()->andFilterWhere(['institution_id'=>$institution]);
-
+    
         $dataProvider = new ActiveDataProvider([
             'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
         ]);
-
+        
         $this->load($params);
 
-        if ($this->validate()) {
+        if (!$this->validate()) {
             // uncomment the following line if you do not want to return any records when validation fails
             // $query->where('0=1');
             return $dataProvider;
         }
-        $query->alias('t');
-        //file_put_contents('c:/temp/php.log',json_encode($this->rol)."\n\r",FILE_APPEND);
-        if ($this->rol) {
+         $query->alias('t');
+       // file_put_contents('c:/temp/php.log',json_encode($this->rol)."\n\r",FILE_APPEND);
+         if ($this->rol) {
             if (array_search('provider',$this->rol)!==false) {
                 $query->innerJoin('providers', 'providers.person_id=t.id');
             }
@@ -98,9 +106,9 @@ class PersonSearch extends Person
             if (array_search('salesman',$this->rol)!==false) {
                 $query->innerJoin('salesman', 'salesman.person_id=t.id');
             }
-        }
-        $query->andFilterWhere([
-            'id' => $this->id,
+        } 
+   /*      $query->andFilterWhere([
+             'id' => $this->id,
             'person_type_id' => $this->person_type_id,
             'special_taxpayer' => $this->special_taxpayer,
             'foreigner' => $this->foreigner,
@@ -111,16 +119,23 @@ class PersonSearch extends Person
             'updated_at' => $this->updated_at,
             'deleted_at' => $this->deleted_at,
             'institution_id' => $this->institution_id,
-            'city_id' => $this->city_id,
+            'city_id' => $this->city_id, 
+ 
+            'cedula' => $this-> cedula,
+            'name' => $this -> name,
+         'address' => $this -> address, 
+             'rol' => $this -> rol 
         ]);
+      */
 
-        $query->andFilterWhere(['like', 'ruc', $this->ruc])
+        $query
             ->andFilterWhere(['like', 'cedula', $this->cedula])
             ->andFilterWhere(['like', 'name', $this->name])
-            ->andFilterWhere(['like', 'commercial_name', $this->commercial_name])
-            ->andFilterWhere(['like', 'phones', $this->phones])
-            ->andFilterWhere(['like', 'address', $this->address])
-            ->andFilterWhere(['like', 'emails', $this->emails]);
+             ->andFilterWhere(['like', 'commercial_name', $this->commercial_name])
+            ->andFilterWhere(['like', 'phones', $this->phones]) 
+            ->andFilterWhere(['like', 'address', $this->address]) 
+             ->andFilterWhere(['like', 'emails', $this->emails]); 
+
         return $dataProvider;
     }
 }

@@ -59,13 +59,13 @@ class Person extends \yii\db\ActiveRecord
      */
     public function rules()
     {
-        return [
-            [['id_ven'], 'safe'],
+        return [ [['cedula','name','address'],'string'
+          /*   [['id_ven'], 'safe'],
             [['person_type_id', 'name', 'institution_id'], 'required'],
             [['person_type_id', 'categories_id', 'associated_person', 'institution_id', 'city_id'], 'default', 'value' => null],
             [['person_type_id', 'categories_id', 'associated_person', 'institution_id', 'city_id', 'province_id'], 'integer'],
-            [['special_taxpayer', 'foreigner', 'status'], 'boolean'],
-            [['address', 'emails',"id_myhouse"], 'string'],
+            [['special_taxpayer', 'foreigner', 'status'], 'boolean'], */
+          /*   [['address', 'emails',"id_myhouse"], 'string'],
             [['created_at', 'updated_at', 'deleted_at'], 'safe'],
             [['ruc'], 'string', 'max' => 13],
             [['cedula'], 'string', 'max' => 10],
@@ -79,7 +79,7 @@ class Person extends \yii\db\ActiveRecord
             [
                 ['ruc', 'ruc', 'commercial_name', 'address', 'city_id', 'province_id'], 'required', 'when' => function ($model) {
                     return  $model->person_type_id == 1;
-                },
+                }, */
                 //'whenClient' => 'function (attribute, value) {$("#closing").is(":visible");}', 'message' => "Entre el dia del cierre mensual"
             ],
         ];
@@ -91,17 +91,17 @@ class Person extends \yii\db\ActiveRecord
     public function attributeLabels()
     {
         return [
-            'id_ven'=>'id ven',
+           /*  'id_ven'=>'id ven',
             'id' => 'ID',
             'person_type_id' => 'Tipo',
             'special_taxpayer' => 'Contribuyente Especial',
-            'ruc' => 'Ruc',
-            'cedula' => 'Cédula',
+            'ruc' => 'Ruc', */
+            'cedula' => 'Cédula', 
             'name' => 'Nombre/Razón Social',
-            'commercial_name' => 'Nombre Comercial',
-            'phones' => 'Telefonos',
-            'address' => 'Dirección',
-            'foreigner' => 'Extranjero',
+           /*  'commercial_name' => 'Nombre Comercial',
+            'phones' => 'Telefonos', */
+           'address' => 'Dirección', 
+           /*  'foreigner' => 'Extranjero',
             'categories_id' => 'Categoría',
             'emails' => 'Emails',
             'associated_person' => 'Persona Asociada',
@@ -112,7 +112,8 @@ class Person extends \yii\db\ActiveRecord
             'institution_id' => 'Institution ID',
             'city_id' => 'Cantón',
             'province_id' => 'Provincia',
-            'id_myhouse'=>'myhose'
+            'id_myhouse'=>'myhose' */
+         /*    'rol' => 'Rol' */
         ];
     }
 

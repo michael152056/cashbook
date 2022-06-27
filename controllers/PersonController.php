@@ -71,11 +71,10 @@ class PersonController extends Controller
     {
         $searchModel = new PersonSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $searchModel->institution_id = 1;
-
+        $searchModel->institution_id = 1; 
         return $this->render('index', [
             'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
+            'dataProvider' => $dataProvider
         ]);
     }
 

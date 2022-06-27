@@ -2,12 +2,27 @@
     background-image: url(../images/fondo_menu.png);
     background-clip: initial;
     background-color: rgb(5, 30, 52);
+    position: fixed !important;
+    height: 100vh !important;
+}
+
+
+
+.sidebar_menu{
+    width: 22em !important;
+}
+
+.right{
+    position: absolute !important;
 }
 
 
 .sidebar{
     overflow: hidden;
 }
+
+
+
 .brand-image2{
     width: 18em !important;
     height: 10em !important;
@@ -20,6 +35,10 @@
 .sidebar-collapse .brand-image-mini {
    margin-top: 2em;
    display: initial !important;
+}
+
+.brand-link:not(.sidebar-collapse .brand-link ){
+    width: 18em !important;
 }
 
 .sidebar-focused .brand-image2{

@@ -1,46 +1,59 @@
 /* Table */
 
-.table-blue{
+#crud-datatable-container{
     margin: 40px;
     width: 95%;
     background-color: white !important;
     box-shadow: 0 0 0 1px rgb(63 63 68 / 5%), 0 1px 2px 0 rgb(63 63 68 / 15%)!important;
 }
-.table-blue td, tr{
+#crud-datatable-container td, tr{
     padding: 20px !important; 
     font-size: 14px;
     text-align: center;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     color: #000000DE;
 }
-.table-blue tr th:first-child{
+#crud-datatable-container tr th:first-child{
     border-top-left-radius: 5px;
     
 }
 
-.table-blue tr th{
+#crud-datatable-container tr th{
     text-align: center !important;
     justify-content: center !important;
     margin: auto !important;
 }
 
-.table-blue tr th:last-child{
+#crud-datatable-container tr th:last-child{
     border-top-right-radius: 5px;
 }
 
-.table-blue tr:nth-child(even)
+#crud-datatable-container tr:nth-child(even)
 {
     background-color: #051e3410;
 }
 
 
-.table-blue th{
-background-color: #082946 !important;
-font-family: "Roboto", "Helvetica", "Arial", sans-serif;
-font-size: 14px;
-font-weight: 400;
-padding: 20px !important; 
+#crud-datatable-container th{
+    background-color: #082946 !important;
+
+    
+    padding: 20px !important; 
 }
+
+#crud-datatable-container tr th,.kv-table-header a {
+    color: white !important; 
+    font-family: "Roboto", "Helvetica", "Arial", sans-serif;
+    font-size: 14px !important;
+    font-weight: 400;
+    text-decoration: none;
+    
+}
+
+.pagination *{
+    font-size: 18px !important; 
+}
+
 .table .thead-dark th{
     border: none;
 }
@@ -63,6 +76,10 @@ padding: 20px !important;
     -o-border-radius: 5px;
 }
 
+
+.kv-panel-pager{
+    margin-bottom: 1.5em;
+}
 .pagination > .active > a, .pagination > .active > span, .pagination > .active > a:hover, .pagination > .active > span:hover, .pagination > .active > a:focus, .pagination > .active > span:focus{
     background: #051E34 ;
     border: 1px solid #051E34 ;
@@ -70,6 +87,25 @@ padding: 20px !important;
 
     text-decoration: none;
 }
+.page-item.active .page-link
+{
+    background: #051E34 ;
+    border: 1px solid #051E34 ;
+    color: white !important;
+}
+
+.page-link{
+    outline: none !important;
+    box-shadow: none !important;
+}
+
+.page-item.disabled .page-link svg *{
+    fill: gray !important;
+}
+.page-item.disabled .page-link{
+    background-color: rgba(211, 211, 211, 0.277) ;
+}
+
 
 .pagination a{
 
@@ -101,7 +137,26 @@ padding: 20px !important;
     -o-border-radius: 5px;
 }
 
+.btn-toolbar .kv-grid-toolbar .toolbar-container .float-right,.header_toolbar,.btn-group{
+    width: 100% !important;
+}
 
+.btn-reload{
+    padding: 1em;
+    background-color: #2196F3;    
+    display: flex;
+    align-items: center;
+}
+
+#crud-datatable-togdata-page, #crud-datatable-togdata-all{
+    width: 6em;
+    justify-content: center;
+    margin-left: 1em;
+    height: 3.5em;
+    display: flex;
+    align-items: center;
+    background-color: white !important;
+}
 
 .search_bar .form-control{
     height: 3em;
@@ -109,6 +164,7 @@ padding: 20px !important;
 
 .search_bar{
     margin: 1.5em;
+    width: 100%;
 }
 
 .btn-pdf{
@@ -136,4 +192,36 @@ padding: 20px !important;
 
 .resultados{
     height: 7em;
+}
+
+/* Card Header */
+
+.card-header
+{
+    background-color: #082946 !important ;
+}
+
+.kv-panel-before{
+    height: 10em;
+    padding: 1.5em;
+    width: 100% !important;
+    box-shadow: 0 0 0 1px rgb(63 63 68 / 5%), 0 1px 2px 0 rgb(63 63 68 / 15%)!important;
+    background: #f5f5f5 !important;
+
+}
+
+.btn-group{
+    width: 60%;
+}
+
+.kv-grid-toolbar{
+    width: 100%;
+}
+
+.kv-panel-after{
+    background-color: rgba(0, 0, 0, 0.03);
+}
+
+.select2-container .select2-selection--multiple{
+    height: 3.3em;
 }

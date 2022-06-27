@@ -27,9 +27,9 @@ $query = new yii\db\Query();
     <img src="<?= Yii::getAlias('@web') . "/images/logos/logo-mini.svg"; ?>" class="brand-image-mini d-none" alt="Cashbook Logo">
 </a>
     <!-- Sidebar Menu -->
-    <nav class="mt-2">
+    <nav class="sidebar_menu mt-2">
     <?php if(!Yii::$app->user->isGuest) { ?> 
-        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent"  data-accordion="true" data-expand-sidebar="true"  data-widget="treeview"  role="menu" >
+        <ul class="nav nav-pills nav-sidebar flex-column nav-child-indent"  data-accordion="false" data-expand-sidebar="true"  data-widget="treeview"  role="menu" >
             <!-- Add icons to the links using the .nav-icon class
                  with font-awesome or any other icon font library -->
 
@@ -64,7 +64,7 @@ $query = new yii\db\Query();
                 </p>
  
             </a>
-                <ul class="nav nav-treeview"  data-enable-remember="true">
+                <ul class="nav nav-treeview" data-trigger=".push-menu">
 				
 				 <?php if(Yii::$app->user->identity->role_id == 1 || Yii::$app->user->identity->role_id == 4) { ?> 
                     <li class="nav-item">

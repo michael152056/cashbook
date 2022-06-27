@@ -9,10 +9,6 @@ return [
      'name',
      'status:boolean',
      'category',
-     [
-         'class'=>'\kartik\grid\DataColumn',
-         'attribute'=>'category',
-     ],
     
     
     
