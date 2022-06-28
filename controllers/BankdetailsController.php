@@ -28,7 +28,7 @@ class BankdetailsController extends Controller
     /**
      * {@inheritdoc}
      */
-  
+
 
     public function behaviors()
     {
@@ -49,13 +49,31 @@ class BankdetailsController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new BankdetailsSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        try {
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+
+            if (
+                !Yii::$app->user->isGuest
+                && Yii::$app->user->identity->role_id != 5
+
+            ) {
+                $searchModel = new BankdetailsSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                } else {
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
     }
 
     /**
@@ -78,15 +96,32 @@ class BankdetailsController extends Controller
      */
     public function actionCreate()
     {
-        $model = new BankDetails();
+        try {
+            if (
+                !Yii::$app->user->isGuest
+                && Yii::$app->user->identity->role_id != 5
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            ) {
+                $model = new BankDetails();
+
+                if ($model->load(Yii::$app->request->post()) && $model->save()) {
+                    return $this->redirect(['view', 'id' => $model->id]);
+                }
+        
+                return $this->render('create', [
+                    'model' => $model,
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                }else{
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
         }
-
-        return $this->render('create', [
-            'model' => $model,
-        ]);
+        
     }
 
     /**
@@ -116,27 +151,25 @@ class BankdetailsController extends Controller
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
      */
-   
+
 
     public function actionDelete($id)
     {
         $request = Yii::$app->request;
         $this->findModel($id)->delete();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+        } else {
             /*
             *   Process for non-ajax request
             */
             return $this->redirect(['index']);
         }
-
-
     }
 
 
@@ -155,37 +188,72 @@ class BankdetailsController extends Controller
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
-    public function actionTransaction(){
-        $sql = new Query;
-        $person = Yii::$app->user->identity->person_id;
-        $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
-        $institution = $result[0]['institution_id'];
-        $model=ChargesDetail::find()->innerJoin("charges","charges_detail.id_charge=charges.id")->innerJoin("person","charges.person_id=person.id")->where(["charges_detail.type_transaccion"=>"Transferencia"])->andWhere(["person.institution_id"=>$institution])->all();
-        $model2=New Charges;
+    public function actionTransaction()
+    {
+        try {
+            if (
+                !Yii::$app->user->isGuest
+                && Yii::$app->user->identity->role_id != 5
 
-        return $this->render('transaccion', [
-            'transaccion'=>$model,"model"=>$model2
-        ]);
+            ) {
+                $sql = new Query;
+                $person = Yii::$app->user->identity->person_id;
+                $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
+                $institution = $result[0]['institution_id'];
+                $model = ChargesDetail::find()->innerJoin("charges", "charges_detail.id_charge=charges.id")->innerJoin("person", "charges.person_id=person.id")->where(["charges_detail.type_transaccion" => "Transferencia"])->andWhere(["person.institution_id" => $institution])->all();
+                $model2 = new Charges;
+
+                return $this->render('transaccion', [
+                    'transaccion' => $model, "model" => $model2
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                } else {
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
     }
-    public function actionDetail($id){
-        $model=ChargesDetail::findOne(["comprobante"=>$id]);
+    public function actionDetail($id)
+    {
+        try {
+            if (
+                !Yii::$app->user->isGuest
+                && Yii::$app->user->identity->role_id != 5
 
-        return $this->render('detail', [
-            'transaccion'=>$model
-        ]);
+            ) {
+                $model = ChargesDetail::findOne(["comprobante" => $id]);
+
+                return $this->render('detail', [
+                    'transaccion' => $model
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                } else {
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
     }
     public function actionPdfview($com)
     {
-        $modelfin=New ChargesDetail;
-        $persona=New Person;
-        $id=$_GET["com"];
-        $modelo= ChargesDetail::findOne(["comprobante"=>$id]);
+        $modelfin = new ChargesDetail;
+        $persona = new Person;
+        $id = $_GET["com"];
+        $modelo = ChargesDetail::findOne(["comprobante" => $id]);
         Yii::debug($modelo);
-        $modelo2=Charges::findOne(["id"=>$modelo->id_charge]);
+        $modelo2 = Charges::findOne(["id" => $modelo->id_charge]);
         yii::debug($modelo->id_asiento);
-        $accounting_sea=AccountingSeats::findOne([["id"=>$modelo->id_asiento]]);
+        $accounting_sea = AccountingSeats::findOne([["id" => $modelo->id_asiento]]);
         $content = $this->renderPartial('pdfview', [
-            "modelo"=>$accounting_sea,"model2"=>$modelo2,"charge"=>$modelo]);
+            "modelo" => $accounting_sea, "model2" => $modelo2, "charge" => $modelo
+        ]);
         $pdf = new \kartik\mpdf\Pdf([
             'mode' => \kartik\mpdf\Pdf::MODE_UTF8, // leaner size using standard fonts
             'content' => $content,
@@ -196,39 +264,39 @@ class BankdetailsController extends Controller
                 'subject' => 'Generating PDF files via yii2-mpdf extension has never been easy'
             ],
             'methods' => [
-                'SetHeader' => ['<br> <br> <br> <br>' ],
+                'SetHeader' => ['<br> <br> <br> <br>'],
                 'SetFooter' => ['|Page {PAGENO}|'],
             ]
         ]);
         return $pdf->render();
     }
-    public function actionGetdata($get){
-$model2=ChargesDetail::find()->andFilterWhere(['like', 'comprobante', $get. '%' , false])->all();;
-foreach($model2 as $mo){
-      $tipo=\app\models\Charges::findOne($mo->id_charge);
-      $person=\app\models\Person::findOne($tipo->person_id);
+    public function actionGetdata($get)
+    {
+        $model2 = ChargesDetail::find()->andFilterWhere(['like', 'comprobante', $get . '%', false])->all();;
+        foreach ($model2 as $mo) {
+            $tipo = \app\models\Charges::findOne($mo->id_charge);
+            $person = \app\models\Person::findOne($tipo->person_id);
 
-        $chart=\app\models\ChartAccounts::findOne($mo->chart_account);
+            $chart = \app\models\ChartAccounts::findOne($mo->chart_account);
 
-        echo '<tr>'.'<td>'.$mo->date.'</td>'.
-        '<td>'. HTML::a($mo->comprobante,Url::to(["detail", "id"=>$mo->comprobante])).'</td>'.
-        '<td>'.$person->name.'</td>'.
-        '<td>'. $tipo->type_charge.'</td>'.
+            echo '<tr>' . '<td>' . $mo->date . '</td>' .
+                '<td>' . HTML::a($mo->comprobante, Url::to(["detail", "id" => $mo->comprobante])) . '</td>' .
+                '<td>' . $person->name . '</td>' .
+                '<td>' . $tipo->type_charge . '</td>' .
 
-      '<td>'. $chart->code." ".$chart->slug .'</td>'.
-        '<td>'. $mo->amount.'</td>
+                '<td>' . $chart->code . " " . $chart->slug . '</td>' .
+                '<td>' . $mo->amount . '</td>
     </tr>';
-
-
-}
-}
-    public function actionGetper($ge){
-        $per=Person::findOne($ge);
-        $model2=Charges::find()->where(["person_id"=>$ge])->all();
+        }
+    }
+    public function actionGetper($ge)
+    {
+        $per = Person::findOne($ge);
+        $model2 = Charges::find()->where(["person_id" => $ge])->all();
         yii::debug($model2);
-        foreach($model2 as $mo){
-            $tipo=\app\models\ChargesDetail::find()->where(["id_charge"=>$mo->id])->all();
-            foreach($tipo as $n){
+        foreach ($model2 as $mo) {
+            $tipo = \app\models\ChargesDetail::find()->where(["id_charge" => $mo->id])->all();
+            foreach ($tipo as $n) {
                 $chart = \app\models\ChartAccounts::findOne($n->chart_account);
 
                 echo '<tr>' . '<td>' . $n->date . '</td>' .
@@ -239,9 +307,8 @@ foreach($model2 as $mo){
                     '<td>' . $chart->code . " " . $chart->slug . '</td>' .
                     '<td>' . $n->amount . '</td>
     </tr>';
-yii::debug($n);
+                yii::debug($n);
             }
         }
     }
-
 }

@@ -38,13 +38,33 @@ class RoleController extends Controller
      */
     public function actionIndex()
     {    
-        $searchModel = new RoleSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+        try {
+          
+    
+            if (!Yii::$app->user->isGuest 
+            && (Yii::$app->user->identity->role_id == 1
+            || Yii::$app->user->identity->role_id == 4)
+            
+            ) {
+                $searchModel = new RoleSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider
+                ]);
+            }else{
+                if(!Yii::$app->user->isGuest){
+                    return $this->redirect("/site/error");
+               
+                }else{
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
+       
+       
     }
 
 

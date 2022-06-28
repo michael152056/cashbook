@@ -37,13 +37,30 @@ class ProductController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new productSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        try {
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            if (
+                !Yii::$app->user->isGuest
+            ) {
+                $searchModel = new productSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                }else{
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
+        
+     
     }
 
     /**

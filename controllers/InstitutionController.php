@@ -37,14 +37,30 @@ class InstitutionController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {    
-        $searchModel = new InstitutionSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    {
+        try {
+            if (
+                !Yii::$app->user->isGuest
+                && (Yii::$app->user->identity->role_id == 1
+                    || Yii::$app->user->identity->role_id == 4)
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            ) {
+                $searchModel = new InstitutionSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                } else {
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
     }
 
 
@@ -54,19 +70,19 @@ class InstitutionController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $request = Yii::$app->request;
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "Empresa: ".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
-                    ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Editar',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
-        }else{
+                'title' => "Empresa: " . $id,
+                'content' => $this->renderAjax('view', [
+                    'model' => $this->findModel($id),
+                ]),
+                'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                    Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+            ];
+        } else {
             return $this->render('view', [
                 'model' => $this->findModel($id),
             ]);
@@ -82,25 +98,25 @@ class InstitutionController extends Controller
     public function actionCreate()
     {
         $request = Yii::$app->request;
-        $model = new Institution();  
+        $model = new Institution();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
+            if ($request->isGet) {
                 return [
-                    'title'=> "Crear nueva Empresa",
-                    'content'=>$this->renderAjax('create', [
+                    'title' => "Crear nueva Empresa",
+                    'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
-                $query="insert into chart_accounts (id, code, slug, institution_id, bigparent_id, parent_id, status, created_at, updated_at, deleted_at, type_account)
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"])
+
+                ];
+            } else if ($model->load($request->post()) && $model->save()) {
+                $query = "insert into chart_accounts (id, code, slug, institution_id, bigparent_id, parent_id, status, created_at, updated_at, deleted_at, type_account)
 values  (13580, '5.2.3', 'Gastos de Operaciones Descontinuadas', :institution , 461, 13425, true, '2021-08-11 10:36:00', '2021-08-11 10:36:00', null, ''),
         (13306, '2.1.11', 'Pasivos directamente relacionados con los Activos No Corrientes', :institution , 188, 13229, true, '2021-08-11 10:36:00', '2021-08-11 10:36:00', null, 'Pasivos directamente relacionados con Activos No Corrientes'),
         (13163, '1.1.5.2', 'Retenciones del IVA', :institution , 45, 13160, true, '2021-08-11 10:36:00', '2021-08-11 10:36:00', null, 'Credito Tributario a favor de la Empresa (IVA)'),
@@ -586,28 +602,28 @@ values  (13580, '5.2.3', 'Gastos de Operaciones Descontinuadas', :institution , 
         (16, '1.1.3.3.1', 'Inventario Scooter', :institution , null, 13145, true, '2022-02-02 15:54:10', '2022-02-02 15:54:10', null, null),
         (17, '1.1.1.3.8', 'banco america', :institution , null, 13125, true, '2022-02-02 19:58:12', '2022-02-02 19:58:12', null, null),
         (18, '1.1.1.3.9', 'Banco del Pichincha cc', :institution , null, 13125, true, '2022-02-03 14:15:20', '2022-02-03 14:15:20', null, null)";
-                Yii::$app->db->createCommand($query)->bindValue(':institution',$model->id)->execute();
+                Yii::$app->db->createCommand($query)->bindValue(':institution', $model->id)->execute();
 
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Crear nueva Empresa",
-                    'content'=>'<span class="text-success">Create Institution success</span>',
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Crear Otra',['create'],['class'=>'btn btn-primary','role'=>'modal-remote'])
-        
-                ];         
-            }else{           
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "Crear nueva Empresa",
+                    'content' => '<span class="text-success">Create Institution success</span>',
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::a('Crear Otra', ['create'], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+
+                ];
+            } else {
                 return [
-                    'title'=> "Crear nueva Empresa",
-                    'content'=>$this->renderAjax('create', [
+                    'title' => "Crear nueva Empresa",
+                    'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"])
+
+                ];
             }
-        }else{
+        } else {
             /*
             *   Process for non-ajax request
             */
@@ -619,7 +635,6 @@ values  (13580, '5.2.3', 'Gastos de Operaciones Descontinuadas', :institution , 
                 ]);
             }
         }
-       
     }
 
     /**
@@ -632,43 +647,43 @@ values  (13580, '5.2.3', 'Gastos de Operaciones Descontinuadas', :institution , 
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
+            if ($request->isGet) {
                 return [
-                    'title'=> "Actualizar Empresa:".$id,
-                    'content'=>$this->renderAjax('update', [
+                    'title' => "Actualizar Empresa:" . $id,
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"])
+                ];
+            } else if ($model->load($request->post()) && $model->save()) {
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Empresa: ".$id,
-                    'content'=>$this->renderAjax('view', [
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "Empresa: " . $id,
+                    'content' => $this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Editar',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
-            }else{
-                 return [
-                    'title'=> "Actualizar Empresa #".$id,
-                    'content'=>$this->renderAjax('update', [
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::a('Editar', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                ];
+            } else {
+                return [
+                    'title' => "Actualizar Empresa #" . $id,
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
-                ];        
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"])
+                ];
             }
-        }else{
+        } else {
             /*
             *   Process for non-ajax request
             */
@@ -681,9 +696,10 @@ values  (13580, '5.2.3', 'Gastos de Operaciones Descontinuadas', :institution , 
             }
         }
     }
-    public function actionExcel(){
+    public function actionExcel()
+    {
         return $this->renderPartial('excel');
-        }
+    }
     /**
      * Delete an existing Institution model.
      * For ajax request will return json object
@@ -696,23 +712,21 @@ values  (13580, '5.2.3', 'Gastos de Operaciones Descontinuadas', :institution , 
         $request = Yii::$app->request;
         $this->findModel($id)->delete();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+        } else {
             /*
             *   Process for non-ajax request
             */
             return $this->redirect(['index']);
         }
-
-
     }
 
-     /**
+    /**
      * Delete multiple existing Institution model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
@@ -720,27 +734,26 @@ values  (13580, '5.2.3', 'Gastos de Operaciones Descontinuadas', :institution , 
      * @return mixed
      */
     public function actionBulkdelete()
-    {        
+    {
         $request = Yii::$app->request;
-        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
-        foreach ( $pks as $pk ) {
+        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
+        foreach ($pks as $pk) {
             $model = $this->findModel($pk);
             $model->delete();
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+        } else {
             /*
             *   Process for non-ajax request
             */
             return $this->redirect(['index']);
         }
-       
     }
 
     /**

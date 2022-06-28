@@ -240,15 +240,24 @@ class CobrosController extends Controller
         return $this->render("index",["chargem"=>$chargem,"charguesd"=>$charges_detail,"Person"=>$persona,"body"=>$body,"header"=>$header,"upt"=>$upt,"bank"=>$bank_details,"sumret"=>$sum]);
     }
     public function actionView(){
-        $sql = new Query;
-        $person = Yii::$app->user->identity->person_id;
-        $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
-        $institution = $result[0]['institution_id'];
-        $model=ChargesDetail::find()->innerJoin("charges","charges_detail.id_charge=charges.id")->innerJoin("person","charges.person_id=person.id")->where(["person.institution_id"=>$institution])->orderBy(["date"=>SORT_ASC])->all();
-        $model2=New Charges;
-        return $this->render('view', [
-            'transaccion'=>$model,"model"=>$model2
-        ]);
+       try {
+            if( !Yii::$app->user->isGuest){
+                        $sql = new Query;
+                $person = Yii::$app->user->identity->person_id;
+                $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
+                $institution = $result[0]['institution_id'];
+                $model=ChargesDetail::find()->innerJoin("charges","charges_detail.id_charge=charges.id")->innerJoin("person","charges.person_id=person.id")->where(["person.institution_id"=>$institution])->orderBy(["date"=>SORT_ASC])->all();
+                $model2=New Charges;
+                return $this->render('view', [
+                    'transaccion'=>$model,"model"=>$model2
+                ]);
+            }else
+            {
+                return $this->redirect("/site/login");
+            }
+       } catch (\Throwable $th) {
+        return $this->redirect("/site/login");
+       }
     }
     public function actionDetail($id){
         $model=ChargesDetail::findOne(["serial"=>$id]);

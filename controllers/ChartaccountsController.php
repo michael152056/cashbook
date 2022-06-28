@@ -35,31 +35,67 @@ class ChartaccountsController extends Controller
 
     public function actionBigbook($account)
     {
-        $searchModel = new ChartAccountsSearch();
-        $searchModel->account = $account;
-        $searchModel->institution_id = 1;
-        $dataProvider = $searchModel->searchbigbook(Yii::$app->request->queryParams);
+        try {
 
-        return $this->render('bigbook', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            if (
+                !Yii::$app->user->isGuest
+                && Yii::$app->user->identity->role_id != 2
+                && Yii::$app->user->identity->role_id != 5
+
+            ) {
+                $searchModel = new ChartAccountsSearch();
+                $searchModel->account = $account;
+                $searchModel->institution_id = 1;
+                $dataProvider = $searchModel->searchbigbook(Yii::$app->request->queryParams);
+
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                } else {
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
     }
-    
+
     /**
      * Lists all ChartAccounts models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new ChartAccountsSearch();
-        $searchModel->institution_id = 1;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        try {
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+            if (
+                !Yii::$app->user->isGuest
+                && Yii::$app->user->identity->role_id != 2
+                && Yii::$app->user->identity->role_id != 5
+
+            ) {
+                $searchModel = new ChartAccountsSearch();
+                $searchModel->institution_id = 1;
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                } else {
+                    return $this->redirect("/site/login");
+                }
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
     }
 
 
@@ -96,8 +132,8 @@ class ChartaccountsController extends Controller
      */
     public function actionCreate($id = 0)
     {
-        $id_ins=Institution::findOne(['users_id'=>Yii::$app->user->identity->id]);
-        $code=ChartAccounts::findOne($id);
+        $id_ins = Institution::findOne(['users_id' => Yii::$app->user->identity->id]);
+        $code = ChartAccounts::findOne($id);
         if ($code->id) $parentModel = $this->findModel($id);
         $request = Yii::$app->request;
         $model = new ChartAccounts();
@@ -246,11 +282,11 @@ class ChartaccountsController extends Controller
             if ($count > 0) {
                 $model = $this->findModel($id);
                 return [
-                    'forceClose' => false, 
+                    'forceClose' => false,
                     'title' => "Cuenta " . $model->code . ' - ' . $model->slug,
                     'content' => 'No se puede borrar esta cuenta mientras tenga subcuentas',
                     'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]),
-                    ];
+                ];
             } else {
                 return ['forceClose' => true, 'forceReload' => '#crud-datatable'];
             }

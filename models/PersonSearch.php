@@ -28,6 +28,8 @@ class PersonSearch extends Person
         ];
     }
 
+
+
     /**
      * @inheritdoc
      */
@@ -46,6 +48,8 @@ class PersonSearch extends Person
      */
     public function search($params)
     {
+        try {
+       
         $sql = new Query;
         $person = Yii::$app->user->identity->person_id;
         $result = $sql->select(['*'])
@@ -135,7 +139,12 @@ class PersonSearch extends Person
             ->andFilterWhere(['like', 'phones', $this->phones]) 
             ->andFilterWhere(['like', 'address', $this->address]) 
              ->andFilterWhere(['like', 'emails', $this->emails]); 
-
-        return $dataProvider;
+             return $dataProvider;
+        } catch (\Throwable $th) {
+           echo $th;
+        }
+     
     }
+
+    
 }

@@ -37,14 +37,23 @@ class InstitutiontypeController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {    
-        $searchModel = new InstitutiontypeSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+    {   
+        try {
+            if (!Yii::$app->user->isGuest) {
+                $searchModel = new InstitutiontypeSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            } else {
+                return $this->redirect("/site/login");
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
+       
     }
 
 

@@ -37,14 +37,24 @@ class ProjectController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {    
-        $searchModel = new ProjectSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+    {   
+        try {
+            if (!Yii::$app->user->isGuest) {
+                $searchModel = new ProjectSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            } else {
+                return $this->redirect("/site/login");
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+       
     }
 
 

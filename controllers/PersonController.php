@@ -69,13 +69,23 @@ class PersonController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new PersonSearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        $searchModel->institution_id = 1; 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider
-        ]);
+
+        try {
+            if (!Yii::$app->user->isGuest) {
+                $searchModel = new PersonSearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                $searchModel->institution_id = 1;
+
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider
+                ]);
+            } else {
+                return $this->redirect("/site/login");
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
     }
 
     public function actionExcel()
@@ -84,7 +94,7 @@ class PersonController extends Controller
     }
 
 
-   
+
 
     /**
      * Displays a single Person model.
@@ -93,21 +103,29 @@ class PersonController extends Controller
      */
     public function actionView($id)
     {
-        $request = Yii::$app->request;
-        if ($request->isAjax) {
-            Yii::$app->response->format = Response::FORMAT_JSON;
-            return [
-                'title' => "Person #" . $id,
-                'content' => $this->renderAjax('view', [
-                    'model' => $this->findModel($id),
-                ]),
-                'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
-                    Html::a('Edit', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
-            ];
-        } else {
-            return $this->render('view', [
-                'model' => $this->findModel($id),
-            ]);
+        try {
+            if (!Yii::$app->user->isGuest) {
+                $request = Yii::$app->request;
+                if ($request->isAjax) {
+                    Yii::$app->response->format = Response::FORMAT_JSON;
+                    return [
+                        'title' => "Person #" . $id,
+                        'content' => $this->renderAjax('view', [
+                            'model' => $this->findModel($id),
+                        ]),
+                        'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                            Html::a('Edit', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                    ];
+                } else {
+                    return $this->render('view', [
+                        'model' => $this->findModel($id),
+                    ]);
+                }
+            } else {
+                return $this->redirect("/site/login");
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
         }
     }
 

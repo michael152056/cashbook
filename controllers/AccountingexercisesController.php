@@ -33,12 +33,13 @@ class AccountingexercisesController extends Controller
         ];
     }
 
-    public function actionToggle($id){
-        $model=$this->findModel($id);
-        $model->is_open=!$model->is_open;
+    public function actionToggle($id)
+    {
+        $model = $this->findModel($id);
+        $model->is_open = !$model->is_open;
         $model->updated_at = date('Y-m-d H:i:s');
         $model->save();
-        return json_encode($model->errors); 
+        return json_encode($model->errors);
     }
 
     /**
@@ -46,19 +47,38 @@ class AccountingexercisesController extends Controller
      * @return mixed
      */
     public function actionIndex()
-    {    
-        $searchModel = new AccountingExercisesSearch();
-        $sql = new Query;
-        $person = Yii::$app->user->identity->person_id;
-        $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
-        $institution = $result[0]['institution_id'];
-        $searchModel->institution_id = $institution;
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-        
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+    {
+        try {
+            if (
+                !Yii::$app->user->isGuest
+                && Yii::$app->user->identity->role_id != 2
+                && Yii::$app->user->identity->role_id != 5
+
+            ) {
+                $searchModel = new AccountingExercisesSearch();
+                $sql = new Query;
+                $person = Yii::$app->user->identity->person_id;
+                $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
+                $institution = $result[0]['institution_id'];
+                $searchModel->institution_id = $institution;
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                }else{
+                    return $this->redirect("/site/login");
+                }
+            }
+            //code...
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
+       
     }
 
 
@@ -68,19 +88,19 @@ class AccountingexercisesController extends Controller
      * @return mixed
      */
     public function actionView($id)
-    {   
+    {
         $request = Yii::$app->request;
-        if($request->isAjax){
+        if ($request->isAjax) {
             Yii::$app->response->format = Response::FORMAT_JSON;
             return [
-                    'title'=> "AccountingExercises #".$id,
-                    'content'=>$this->renderAjax('view', [
-                        'model' => $this->findModel($id),
-                    ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
-        }else{
+                'title' => "AccountingExercises #" . $id,
+                'content' => $this->renderAjax('view', [
+                    'model' => $this->findModel($id),
+                ]),
+                'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                    Html::a('Edit', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+            ];
+        } else {
             return $this->render('view', [
                 'model' => $this->findModel($id),
             ]);
@@ -96,45 +116,45 @@ class AccountingexercisesController extends Controller
     public function actionCreate($institution_id)
     {
         $request = Yii::$app->request;
-        $model = new AccountingExercises();  
+        $model = new AccountingExercises();
         $model->institution_id = $institution_id;
-        $model->date_start = $model->date_start?$model->date_start:date('Y-m-d');
-        $model->date_end = $model->date_end?$model->date_end:date('Y-m-d');
+        $model->date_start = $model->date_start ? $model->date_start : date('Y-m-d');
+        $model->date_end = $model->date_end ? $model->date_end : date('Y-m-d');
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
+            if ($request->isGet) {
                 return [
-                    'title'=> "Crear nuevo ejercicio contable",
-                    'content'=>$this->renderAjax('create', [
+                    'title' => "Crear nuevo ejercicio contable",
+                    'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"])
+
+                ];
+            } else if ($model->load($request->post()) && $model->save()) {
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "Crear nuevo ejercicio contable",
-                    'content'=>'<span class="text-success">Ejercicio contable creado correctamente</span>',
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"])
-                ];         
-            }else{           
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "Crear nuevo ejercicio contable",
+                    'content' => '<span class="text-success">Ejercicio contable creado correctamente</span>',
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"])
+                ];
+            } else {
                 return [
-                    'title'=> "Crear nuevo ejercicio contable",
-                    'content'=>$this->renderAjax('create', [
+                    'title' => "Crear nuevo ejercicio contable",
+                    'content' => $this->renderAjax('create', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Cerrar',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Guardar',['class'=>'btn btn-primary','type'=>"submit"])
-        
-                ];         
+                    'footer' => Html::button('Cerrar', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button('Guardar', ['class' => 'btn btn-primary', 'type' => "submit"])
+
+                ];
             }
-        }else{
+        } else {
             /*
             *   Process for non-ajax request
             */
@@ -146,7 +166,6 @@ class AccountingexercisesController extends Controller
                 ]);
             }
         }
-       
     }
 
     /**
@@ -159,43 +178,43 @@ class AccountingexercisesController extends Controller
     public function actionUpdate($id)
     {
         $request = Yii::$app->request;
-        $model = $this->findModel($id);       
+        $model = $this->findModel($id);
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            if($request->isGet){
+            if ($request->isGet) {
                 return [
-                    'title'=> "Update AccountingExercises #".$id,
-                    'content'=>$this->renderAjax('update', [
+                    'title' => "Update AccountingExercises #" . $id,
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];         
-            }else if($model->load($request->post()) && $model->save()){
+                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"])
+                ];
+            } else if ($model->load($request->post()) && $model->save()) {
                 return [
-                    'forceReload'=>'#crud-datatable-pjax',
-                    'title'=> "AccountingExercises #".$id,
-                    'content'=>$this->renderAjax('view', [
+                    'forceReload' => '#crud-datatable-pjax',
+                    'title' => "AccountingExercises #" . $id,
+                    'content' => $this->renderAjax('view', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                            Html::a('Edit',['update','id'=>$id],['class'=>'btn btn-primary','role'=>'modal-remote'])
-                ];    
-            }else{
-                 return [
-                    'title'=> "Update AccountingExercises #".$id,
-                    'content'=>$this->renderAjax('update', [
+                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::a('Edit', ['update', 'id' => $id], ['class' => 'btn btn-primary', 'role' => 'modal-remote'])
+                ];
+            } else {
+                return [
+                    'title' => "Update AccountingExercises #" . $id,
+                    'content' => $this->renderAjax('update', [
                         'model' => $model,
                     ]),
-                    'footer'=> Html::button('Close',['class'=>'btn btn-default pull-left','data-dismiss'=>"modal"]).
-                                Html::button('Save',['class'=>'btn btn-primary','type'=>"submit"])
-                ];        
+                    'footer' => Html::button('Close', ['class' => 'btn btn-default pull-left', 'data-dismiss' => "modal"]) .
+                        Html::button('Save', ['class' => 'btn btn-primary', 'type' => "submit"])
+                ];
             }
-        }else{
+        } else {
             /*
             *   Process for non-ajax request
             */
@@ -221,23 +240,21 @@ class AccountingexercisesController extends Controller
         $request = Yii::$app->request;
         $this->findModel($id)->delete();
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+        } else {
             /*
             *   Process for non-ajax request
             */
             return $this->redirect(['index']);
         }
-
-
     }
 
-     /**
+    /**
      * Delete multiple existing AccountingExercises model.
      * For ajax request will return json object
      * and for non-ajax request if deletion is successful, the browser will be redirected to the 'index' page.
@@ -245,27 +262,26 @@ class AccountingexercisesController extends Controller
      * @return mixed
      */
     public function actionBulkdelete()
-    {        
+    {
         $request = Yii::$app->request;
-        $pks = explode(',', $request->post( 'pks' )); // Array or selected records primary keys
-        foreach ( $pks as $pk ) {
+        $pks = explode(',', $request->post('pks')); // Array or selected records primary keys
+        foreach ($pks as $pk) {
             $model = $this->findModel($pk);
             $model->delete();
         }
 
-        if($request->isAjax){
+        if ($request->isAjax) {
             /*
             *   Process for ajax request
             */
             Yii::$app->response->format = Response::FORMAT_JSON;
-            return ['forceClose'=>true,'forceReload'=>'#crud-datatable-pjax'];
-        }else{
+            return ['forceClose' => true, 'forceReload' => '#crud-datatable-pjax'];
+        } else {
             /*
             *   Process for non-ajax request
             */
             return $this->redirect(['index']);
         }
-       
     }
 
     /**

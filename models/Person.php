@@ -236,4 +236,5 @@ class Person extends \yii\db\ActiveRecord
     {
         return $this->hasMany(Shareholder::className(), ['person_id' => 'id']);
     }
+
 }

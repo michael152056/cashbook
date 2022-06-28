@@ -33,7 +33,6 @@ use yii\widgets\Pjax;
 
 $query = new yii\db\Query();
 $sql = new yii\db\Query();
-
 ?>
 
 
@@ -45,6 +44,9 @@ $person = Yii::$app->user->identity->person_id;
 $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
 $institution = $result[0]['institution_id'];
 $results_per_page = 10;
+/* $user = $this->getUser();
+echo $user */
+
 ?>
 
 
@@ -133,5 +135,9 @@ $results_per_page = 10;
         'backdrop' => 'static',
         'keyboard' => false,
     ],
-]) ?>
+])
+ ?>
+
+
 <?php Modal::end(); ?>
+

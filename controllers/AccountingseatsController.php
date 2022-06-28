@@ -14,6 +14,7 @@ use \yii\web\Response;
 use yii\helpers\Html;
 use kartik\mpdf\Pdf;
 use yii\db\Query;
+
 /**
  * AccountingseatsController implements the CRUD actions for AccountingSeats model.
  */
@@ -69,24 +70,41 @@ class AccountingseatsController extends Controller
      */
     public function actionIndex($account = 2)
     {
-        $searchModel = new AccountingSeatsSearch();
-        $searchModel->account = 2;
-        $sql = new Query;
-        $person = Yii::$app->user->identity->person_id;
-        $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
-        $institution = $result[0]['institution_id'];
+        try {
+          
+            if (
+                !Yii::$app->user->isGuest
+                && Yii::$app->user->identity->role_id != 2
+                && Yii::$app->user->identity->role_id != 5
 
-        $searchModel->institution_id = $institution;
-        Yii::debug(Yii::$app->request->queryParams);
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            ) {
+                $searchModel = new AccountingSeatsSearch();
+                $searchModel->account = 2;
+                $sql = new Query;
+                $person = Yii::$app->user->identity->person_id;
+                $result = $sql->select(['*'])->from('person')->where(['id' => $person])->all();
+                $institution = $result[0]['institution_id'];
+    
+                $searchModel->institution_id = $institution;
+                Yii::debug(Yii::$app->request->queryParams);
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
-        if ($dataProvider->load(Yii::$app->request->get())) {
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider
+                ]);
+            } else {
+                if (!Yii::$app->user->isGuest) {
+                    return $this->redirect("/site/error");
+                }else{
+                    return $this->redirect("/site/login");
+                }
+            }
 
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
         }
+       
     }
 
 
@@ -124,11 +142,11 @@ class AccountingseatsController extends Controller
     public function actionCreate($institution_id)
     {
         $fecha = new DateTime();
-        $f=$fecha->getTimestamp();
+        $f = $fecha->getTimestamp();
         $h = rand(1, 1000000);
         $request = Yii::$app->request;
         $model = new AccountingSeats();
-        $model->id=$f+$h;
+        $model->id = $f + $h;
         $model->institution_id = $institution_id;
         $model->date = date('Y-m-d');
 
@@ -280,7 +298,7 @@ class AccountingseatsController extends Controller
     {
         //only is manual 
         $request = Yii::$app->request;
-        AccountingSeatsDetails::deleteAll(['accounting_seat_id'=>$id]);
+        AccountingSeatsDetails::deleteAll(['accounting_seat_id' => $id]);
         $this->findModel($id)->delete();
 
         if ($request->isAjax) {

@@ -29,6 +29,7 @@ use yii\widgets\DetailView;
             'deleted_at',
             'institution_id',
         ],
-    ]) ?>
+    ]);    
+    ?>
 
 </div>

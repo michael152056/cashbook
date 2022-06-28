@@ -128,29 +128,38 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-		 if (!Yii::$app->user->isGuest) {
-          return $this->render('index');
-        }
-        $this->layout = 'blank';
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            $user=Users::findOne(["username"=>$model->username]);
-            yii::debug($user->active);
-            if($user->active==True){
-
-                return $this->goBack();
+        try {
+            if (!Yii::$app->user->isGuest) {
+                  return $this->render('index');
+                  $this->layout = 'blank';
+                  $model = new LoginForm();
+                  if ($model->load(Yii::$app->request->post()) && $model->login()) {
+                      $user=Users::findOne(["username"=>$model->username]);
+                      yii::debug($user->active);
+                      if($user->active==True){
+          
+                          return $this->goBack();
+                      }
+                      else{
+                          yii::debug($user->active);
+                          return $this->redirect("/web/site/validate");
+                      }
+          
+                  }
+                  $model->password = '';
+                  return $this->render('login', [
+                      'model' => $model,
+                  ]);
+                  //return $this->render('/site/login');
+            } else {
+                return $this->redirect("/site/login");
             }
-            else{
-                yii::debug($user->active);
-                return $this->redirect("/web/site/validate");
-            }
-
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
         }
-        $model->password = '';
-        return $this->render('login', [
-            'model' => $model,
-        ]);
-        //return $this->render('/site/login');
+
+
+		
     }
 
     /**

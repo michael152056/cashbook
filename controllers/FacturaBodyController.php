@@ -35,13 +35,21 @@ class FacturaBodyController extends Controller
      */
     public function actionIndex()
     {
-        $searchModel = new FacturaBodySearch();
-        $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+        try {
+            if (!Yii::$app->user->isGuest) {
+                $searchModel = new FacturaBodySearch();
+                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
-        return $this->render('index', [
-            'searchModel' => $searchModel,
-            'dataProvider' => $dataProvider,
-        ]);
+                return $this->render('index', [
+                    'searchModel' => $searchModel,
+                    'dataProvider' => $dataProvider,
+                ]);
+            } else {
+                return $this->redirect("/site/login");
+            }
+        } catch (\Throwable $th) {
+            return $this->redirect("/site/login");
+        }
     }
 
     /**

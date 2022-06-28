@@ -361,7 +361,8 @@ $query = new yii\db\Query();
                      $consultar = $row['consultar'];  
                  }
              }
-             if($agregar == 1 || $consultar == 1 || Yii::$app->user->identity->role_id == 1)
+             if($agregar == 1 || $consultar == 1 
+             || Yii::$app->user->identity->role_id == 1)
              
              { 
 
