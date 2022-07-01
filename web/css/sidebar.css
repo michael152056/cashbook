@@ -1,7 +1,7 @@
 .main-sidebar{
     background-image: url(../images/fondo_menu.png);
     background-clip: initial;
-    background-color: rgb(5, 30, 52);
+    background-color: #1c233a;
     position: fixed !important;
     height: 100vh !important;
 }
@@ -24,7 +24,7 @@
 
 
 .brand-image2{
-    width: 18em !important;
+    width: 16em !important;
     height: 10em !important;
     display: initial;
 }

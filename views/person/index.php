@@ -23,6 +23,7 @@
 use app\models\Person;
 use yii\helpers\Url;
 use yii\helpers\Html;
+use yii\widgets\ActiveForm;
 use yii\bootstrap4\Modal;
 use kartik\grid\GridView;
 use hoaaah\ajaxcrud\CrudAsset;
@@ -51,6 +52,27 @@ echo $user */
 
 
 <link rel="stylesheet" type="text/css" href="/css/persona.css">
+<?php Pjax::begin(); ?> 
+
+
+<?php $f = ActiveForm::begin([
+    'options' => ['data-pjax' => true,
+    'id'=> 'dynamic-form111'],
+
+    "method" => "post",
+    "action" => Url::toRoute("person/index"),
+    "enableClientValidation" => true
+
+]); ?>
+
+<div class="form-group">
+<?= $f -> field($form, "q")->input("search") ?>
+</div>
+
+<?= Html::submitButton("Buscar",["class" => "btn btn-primary"]) ?>
+
+<?php $f-> end() ?>
+
 
 <div class="institution-index  p-5">
         <div id="ajaxCrudDatatable">
@@ -63,8 +85,7 @@ echo $user */
                 'columns' => require(__DIR__ . '/_columns.php'),
                 'toolbar' => [
                     [
-                        'content' => '
-                       
+                        'content' => '                       
                 <div class="row header_toolbar">
                     <div class="col col-5 search_bar">
                     <div class="input-group">
@@ -141,3 +162,4 @@ echo $user */
 
 <?php Modal::end(); ?>
 
+<?php Pjax::end(); ?> 

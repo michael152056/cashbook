@@ -19,6 +19,7 @@ class PersonSearch extends Person
     /**
      * @inheritdoc
      */
+
     public function rules()
     {
         return [
@@ -133,12 +134,93 @@ class PersonSearch extends Person
       */
 
         $query
-            ->andFilterWhere(['like', 'cedula', $this->cedula])
-            ->andFilterWhere(['like', 'name', $this->name])
-             ->andFilterWhere(['like', 'commercial_name', $this->commercial_name])
-            ->andFilterWhere(['like', 'phones', $this->phones]) 
-            ->andFilterWhere(['like', 'address', $this->address]) 
-             ->andFilterWhere(['like', 'emails', $this->emails]); 
+            ->andFilterWhere(['ilike', 'cedula', $this->cedula])
+            ->andFilterWhere(['ilike', 'name', $this->name])
+
+             ->andFilterWhere(['ilike', 'commercial_name', $this->commercial_name])
+            ->andFilterWhere(['ilike', 'phones', $this->phones]) 
+            ->andFilterWhere(['ilike', 'address', $this->address]) 
+             ->andFilterWhere(['ilike', 'emails', $this->emails]); 
+             return $dataProvider;
+        } catch (\Throwable $th) {
+           echo $th;
+        }
+     
+    }
+
+    public function searchGeneral($params)
+    {
+        try {
+       
+        $sql = new Query;
+        $person = Yii::$app->user->identity->person_id;
+        $result = $sql->select(['*'])
+        ->from('person')
+        ->where(['id' => $person])
+        ->all();
+
+        $institution = $result[0]['institution_id'];
+
+        $query1 = new Query;
+        $users = array();
+        $usersstr = "";
+        $us=Users::findOne(["username"=>Yii::$app->user->identity->username]);
+ 
+         $usuarios = $query1->select(['institution_id'])->from('users, person')->Where('person.id = person_id')->all();
+      if ($usuarios) {
+            foreach ($usuarios as $row)
+            {
+                $users = $row['institution_id'];
+                $usersstr = $users.",".$usersstr;
+            }
+        } 
+         $modulos = explode(",", $usersstr);
+        yii::debug($modulos); 
+     
+        $query = Person::find()
+        ->orFilterWhere(['ilike', 'name', $params])
+        ->orFilterWhere(['ilike', 'cedula', $params])
+        ->orFilterWhere(['ilike', 'address', $params]);
+    
+        $dataProvider = new ActiveDataProvider([
+            'query' => $query,
+            'pagination' => [
+                'pageSize' => 10,
+            ],
+        ]);
+        
+        $this->load($params);
+
+        if (!$this->validate()) {
+            // uncomment the following line if you do not want to return any records when validation fails
+            // $query->where('0=1');
+            return $dataProvider;
+        }
+         $query->alias('t');
+       // file_put_contents('c:/temp/php.log',json_encode($this->rol)."\n\r",FILE_APPEND);
+       
+   /*      $query->andFilterWhere([
+             'id' => $this->id,
+            'person_type_id' => $this->person_type_id,
+            'special_taxpayer' => $this->special_taxpayer,
+            'foreigner' => $this->foreigner,
+            'categories_id' => $this->categories_id,
+            'associated_person' => $this->associated_person,
+            'status' => $this->status,
+            'created_at' => $this->created_at,
+            'updated_at' => $this->updated_at,
+            'deleted_at' => $this->deleted_at,
+            'institution_id' => $this->institution_id,
+            'city_id' => $this->city_id, 
+ 
+            'cedula' => $this-> cedula,
+            'name' => $this -> name,
+         'address' => $this -> address, 
+             'rol' => $this -> rol 
+        ]);
+      */
+
+
              return $dataProvider;
         } catch (\Throwable $th) {
            echo $th;

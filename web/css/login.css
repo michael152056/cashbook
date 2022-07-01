@@ -1,0 +1,114 @@
+*{
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+.img-login {
+    background-image: url("/images/portada-login2.jpg") !important;
+    background-size: cover;
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    background-repeat: no-repeat;
+    background-position-x: center;
+    display: flex;
+    text-align: left;
+    align-items: end;
+    justify-content: center;
+    color: white;
+}
+
+.img-login .slogans{
+    font-size: 2em;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    margin-bottom: 4em !important;
+}
+
+.slogan, .slogan *{
+    font-size: 14px;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    color: #515365;
+}
+
+#loginform-username,#loginform-password{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    transition: all 0.3s;
+    border: none;
+    background: none;
+    box-shadow: none;
+    border-bottom: 1px solid #9e9e9e;
+    border-radius: 0px;
+    outline: none;
+    padding: 0.5em !important;
+    margin-bottom: 2.5em !important;
+    font-size: 1.5rem !important;
+    height: 5rem !important;
+    -webkit-border-radius: 0px;
+    -moz-border-radius: 0px;
+    -ms-border-radius: 0px;
+    -o-border-radius: 0px;
+    -webkit-transition: all 0.3s;
+    -moz-transition: all 0.3s;
+    -ms-transition: all 0.3s;
+    -o-transition: all 0.3s;
+
+}
+
+.has-error #loginform-username, .has-error #loginform-password{
+    margin-bottom: 1.5em !important;
+}
+
+.label-login-user, .label-login-pass{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    display: inline;
+    font-weight: lighter !important;
+    font-size: 1.5em !important;
+    color: #9e9e9e;
+}
+
+#loginform-username:focus,#loginform-password:focus{
+    border-bottom: 1px solid #1c233a;
+}
+
+.btn-login{
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    width: 100%;
+    background-color: #1c233a !important;
+    border: none;
+    color: white !important;
+    height: 4em;
+    font-size: 13px;
+    margin-top: 1em !important;
+}
+
+.control-label{
+    width: 100%;
+    justify-content: left !important;
+    text-align: left !important;
+}
+
+
+
+.apass, .apass b{
+    color: #1c233a !important;
+    font-size: 14px;
+    text-align: right;
+}
+
+.formulario-login{
+    margin-left: 10% !important ;
+}
+
+.has-error .help-block-error{
+    background-color: rgb(219, 44, 44);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    color: white !important;
+    padding: 0.7em !important;
+    margin-bottom: 1.5em !important;
+}

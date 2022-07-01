@@ -6,6 +6,7 @@ use app\models\Institution;
 use Yii;
 use app\models\Person;
 use app\models\PersonSearch;
+use app\models\FormSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -69,23 +70,42 @@ class PersonController extends Controller
      */
     public function actionIndex()
     {
-
-        try {
-            if (!Yii::$app->user->isGuest) {
-                $searchModel = new PersonSearch();
-                $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
-                $searchModel->institution_id = 1;
-
-                return $this->render('index', [
-                    'searchModel' => $searchModel,
-                    'dataProvider' => $dataProvider
-                ]);
-            } else {
+        $form = new FormSearch();
+        $search = null;
+        if($form -> load(Yii::$app->request-> post())){
+            $searchModel = new PersonSearch();
+            $search = Html::encode($form->q);
+            $dataProvider = $searchModel->searchGeneral($search);
+           
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'form' => $form,
+                'search' => $search
+            ]);
+           
+        }else{
+            try {  
+                if (!Yii::$app->user->isGuest) {
+                    $searchModel = new PersonSearch();
+                    $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+                    $searchModel->institution_id = 1;
+    
+                    return $this->render('index', [
+                        'searchModel' => $searchModel,
+                        'dataProvider' => $dataProvider,
+                        'form' => $form,
+                        'search' => $search
+                    ]);
+                } else {
+                    return $this->redirect("/site/login");
+                }
+            } catch (\Throwable $th) {
                 return $this->redirect("/site/login");
-            }
-        } catch (\Throwable $th) {
-            return $this->redirect("/site/login");
+            }  
         }
+
+      
     }
 
     public function actionExcel()
@@ -93,6 +113,26 @@ class PersonController extends Controller
         return $this->renderPartial('excel');
     }
 
+
+/*     public function actionFormSearch(){
+        $form = new FormSearch();
+        $search = null;
+        if($form -> load(Yii::$app->request-> get())){
+            $searchModel = new PersonSearch();
+            $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
+            $searchModel->institution_id = 1;
+
+            
+            return $this->render('index', [
+                'searchModel' => $searchModel,
+                'dataProvider' => $dataProvider,
+                'form' => $form
+            ]);
+           
+        }
+
+      
+    } */
 
 
 
@@ -103,7 +143,26 @@ class PersonController extends Controller
      */
     public function actionView($id)
     {
-        try {
+     /*    $table = new Person;
+        $model = $table->find()->all();
+
+        $form = new FormSearch;
+        $search = null;
+        if($form -> load(Yii::$app->request-> get())){
+            if($form->validate()){
+                $search = Html::encode($form->q);
+                $query = "SELECT * FROM person WHERE id_person LIKE '%$search%' OR";
+                $query .= "name LIKE '%$search%' OR address LIKE '%$search%' ";
+
+                $model = $table->findBySql($query)->all();
+            }else{
+                $form ->getErrors();
+            }
+        }
+
+        return $this->render("view",["model" => $model, "form" => $form, "search" => $search ]); */
+
+       try {
             if (!Yii::$app->user->isGuest) {
                 $request = Yii::$app->request;
                 if ($request->isAjax) {
@@ -126,7 +185,7 @@ class PersonController extends Controller
             }
         } catch (\Throwable $th) {
             return $this->redirect("/site/login");
-        }
+        }  
     }
 
     /**

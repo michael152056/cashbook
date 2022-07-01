@@ -23,8 +23,8 @@ $query = new yii\db\Query();
 <div class="sidebar" >
     <!-- Brand Logo -->
 <a href="<?= Url::to(['site/index']) ?>" class="brand-link text-center">
-    <img src="<?= Yii::getAlias('@web') . "/images/logos/logotglabs.svg"; ?>" class="brand-image2" alt="Cashbook Logo">
-    <img src="<?= Yii::getAlias('@web') . "/images/logos/logo-mini.svg"; ?>" class="brand-image-mini d-none" alt="Cashbook Logo">
+    <img src="<?= Yii::getAlias('@web') . "/images/logos/logo_cc.svg"; ?>" class="brand-image2" alt="Cashbook Logo">
+    <img src="<?= Yii::getAlias('@web') . "/images/logos/logofinalsmall.svg"; ?>" class="brand-image-mini d-none" alt="Cashbook Logo">
 </a>
     <!-- Sidebar Menu -->
     <nav class="sidebar_menu mt-2">
