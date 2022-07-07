@@ -72,12 +72,12 @@ class PersonController extends Controller
     {
         $form = new FormSearch();
         $search = null;
-        if($form -> load(Yii::$app->request-> post())){
+        if($form -> load(Yii::$app->request-> get())){
             $searchModel = new PersonSearch();
             $search = Html::encode($form->q);
             $dataProvider = $searchModel->searchGeneral($search);
            
-            return $this->render('index', [
+            return $this->renderPartial('index', [
                 'searchModel' => $searchModel,
                 'dataProvider' => $dataProvider,
                 'form' => $form,

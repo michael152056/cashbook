@@ -152,31 +152,6 @@ class PersonSearch extends Person
     {
         try {
        
-        $sql = new Query;
-        $person = Yii::$app->user->identity->person_id;
-        $result = $sql->select(['*'])
-        ->from('person')
-        ->where(['id' => $person])
-        ->all();
-
-        $institution = $result[0]['institution_id'];
-
-        $query1 = new Query;
-        $users = array();
-        $usersstr = "";
-        $us=Users::findOne(["username"=>Yii::$app->user->identity->username]);
- 
-         $usuarios = $query1->select(['institution_id'])->from('users, person')->Where('person.id = person_id')->all();
-      if ($usuarios) {
-            foreach ($usuarios as $row)
-            {
-                $users = $row['institution_id'];
-                $usersstr = $users.",".$usersstr;
-            }
-        } 
-         $modulos = explode(",", $usersstr);
-        yii::debug($modulos); 
-     
         $query = Person::find()
         ->orFilterWhere(['ilike', 'name', $params])
         ->orFilterWhere(['ilike', 'cedula', $params])

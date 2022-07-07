@@ -9,7 +9,7 @@ class FormSearch extends PersonSearch{
     public function rules()
     {
         return [
-            ["q","match","pattern" => "/^[0-9a-z\s-]+$/i","message" => "Solo se aceptan letras y números"],
+            ["q","match","pattern" => "/^[0-9a-z\s-ñ]+$/i","message" => "Solo se aceptan letras y números"],
         ];
     }
 

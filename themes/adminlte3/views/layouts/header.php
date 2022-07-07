@@ -11,7 +11,7 @@ use yii\helpers\Url;
 
 
 <!-- Right navbar links -->
-<ul class="navbar-nav ml-auto">
+<ul class="navbar-nav ml-auto mr-2">
     
    
    

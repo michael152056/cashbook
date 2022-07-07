@@ -3,6 +3,19 @@
     padding: 0 !important;
 }
 
+body{
+    height: 100vh !important;
+    max-height: 100vh !important;
+}
+
+.card{
+    max-height: 100vh !important;
+}
+
+#login-form{
+    margin: 0 !important;
+}
+
 .img-login {
     background-image: url("/images/portada-login2.jpg") !important;
     background-size: cover;
@@ -21,9 +34,12 @@
 }
 
 .img-login .slogans{
-    font-size: 2em;
+    font-size: 1.5em;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     margin-bottom: 4em !important;
+}
+.img-login .slogans img{
+    width: 1.5em !important;
 }
 
 .slogan, .slogan *{
@@ -97,9 +113,6 @@
     text-align: right;
 }
 
-.formulario-login{
-    margin-left: 10% !important ;
-}
 
 .has-error .help-block-error{
     background-color: rgb(219, 44, 44);
@@ -112,3 +125,19 @@
     padding: 0.7em !important;
     margin-bottom: 1.5em !important;
 }
+
+
+
+@media (min-width: 992px) {
+    .formulario-login{
+        margin-left: 12% !important ;
+    }
+    
+  }
+
+  @media (max-width: 768px) {
+    .formulario-login{
+        margin: 10% !important ;
+    }
+    
+  }

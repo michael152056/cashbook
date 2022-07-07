@@ -24,9 +24,9 @@ app\assets\AppAsset::register($this);
 </head>
 
 <body>
-    <div class="card text-center" style="background-color: #f2f2f2;">
+    <div class="card text-center p-4 p-sm-0" style="background-color: #f2f2f2;">
         <div class="row vh-100 g-0" id="sideImage">
-            <div class="col col-md-6">
+            <div class="col col-md-6 d-none d-md-flex ">
                 <div class="img-login">
                     <span class="slogans">
                          <img src="/images/svg/check-circle-solid.svg" class="mb-4" alt=""> Sumando inteligentemente <br>
@@ -35,9 +35,9 @@ app\assets\AppAsset::register($this);
                     </span>
                 </div>
             </div>
-            <div class="col-md-6 align-self-center p-5">
+            <div class="col-md-6 align-self-center login_form">
                 
-                <div class="card-body mx-4 rounded-3 " id="login-form">
+                <div class="card-body mx-4 rounded-3  p-md-0" id="login-form">
                     <h2 class="card-title link-primary fw-bold mb-4">
                         <img src="<?= Yii::getAlias('@web') . "/images/logos/logocc_azul.svg" ?>" width=50% height=50%>
                     </h2>
@@ -65,9 +65,9 @@ app\assets\AppAsset::register($this);
                             <?= Html::submitButton('Ingresar', ['class' => 'btn  btn-login', 'name' => 'login-button']) ?>
                             <?php ActiveForm::end(); ?>
                         </div>
-                        <div class="d-grid col-6 mx-auto">
+                        <div class="col col-12 col-md-6 justify-content-end m-auto text-end w-auto">
                             <br>
-                            <a href='<?= Url::to("/web/site/changepassword") ?>' style="text-decoration:none;text-color:blue" class="float-right apass mt-3">Olvidaste tú <b> contraseña?</b></a>
+                            <a href='<?= Url::to("/web/site/changepassword") ?>' style="text-decoration:none;text-color:blue" class="float-right apass mt-3 me-5">Olvidaste tú <b> contraseña?</b></a>
 
                         </div>
                     </center>

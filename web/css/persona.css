@@ -1,18 +1,81 @@
+/* Header */
+.main-header{
+    margin-bottom: 0;
+}
+
+body{
+    width: 100% !important;
+    max-width: 100% !important;
+    overflow-x: hidden;
+}
+
+.container-fluid{
+    padding: 0 !important;
+    width: 100% !important;
+    max-width: 100% !important;
+}
+
+/* Scroll */
+body::-webkit-scrollbar {
+    width: 10px;
+  }
+  
+  body::-webkit-scrollbar-thumb {
+    background: #082946;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+  }
+  
+  body::-webkit-scrollbar-track {
+    background: #ddd;
+    border-radius: 20px;
+    -webkit-border-radius: 20px;
+    -moz-border-radius: 20px;
+    -ms-border-radius: 20px;
+    -o-border-radius: 20px;
+  }
+  
+
 /* Table */
 
+
+
+.help-block{
+    right: 20px;
+    top: 15%;
+    position: absolute;
+    background-color: rgb(219, 44, 44);
+    border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -ms-border-radius: 5px;
+    -o-border-radius: 5px;
+    color: white !important;
+    margin-bottom: 1.5em !important;
+}
+.has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label{
+    padding: 0.7em !important;
+}
+
+
 #crud-datatable-container{
-    margin: 40px;
-    width: 95%;
+    margin: 20px;
+    width: auto;
     background-color: white !important;
     box-shadow: 0 0 0 1px rgb(63 63 68 / 5%), 0 1px 2px 0 rgb(63 63 68 / 15%)!important;
 }
 #crud-datatable-container td, tr{
-    padding: 20px !important; 
+    padding: 15px !important; 
     font-size: 14px;
     text-align: center;
     font-family: "Roboto", "Helvetica", "Arial", sans-serif;
     color: #000000DE;
+
 }
+
 #crud-datatable-container tr th:first-child{
     border-top-left-radius: 5px;
     
@@ -35,9 +98,7 @@
 
 
 #crud-datatable-container th{
-    background-color: #082946 !important;
-
-    
+    background-color: #082946 !important;    
     padding: 20px !important; 
 }
 
@@ -57,6 +118,64 @@
 .table .thead-dark th{
     border: none;
 }
+
+#formCrud{
+    background-color: rgb(245,245,245);
+    box-shadow: 0 0 0 1px rgb(63 63 68 / 5%), 0 1px 2px 0 rgb(63 63 68 / 15%)!important;
+    height: 8em;
+    margin-top: 2em;
+    margin-left: 2.8em;
+    padding: 0.5em;
+    margin-right: 2.7em !important;
+
+}
+
+#formsearch-q{
+    border-radius: 0px !important;
+    border-top-right-radius: 5px !important;
+    border-bottom-right-radius: 5px !important;
+    box-shadow: none !important;
+
+}
+
+.sidebar-collapse .content-wrapper{
+    padding: 0 !important;
+}
+
+.input-group .form-control:first-child, .input-group-addon:first-child, .input-group-btn:first-child > .btn, .input-group-btn:first-child > .btn-group > .btn, .input-group-btn:first-child > .dropdown-toggle, .input-group-btn:last-child > .btn:not(:last-child):not(.dropdown-toggle), .input-group-btn:last-child > .btn-group:not(:last-child) > .btn
+{
+    height: 3em !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
+    box-shadow: none !important;
+
+}
+
+.input-group-addon:first-child{
+    width: 3em;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+}
+
+.input-group-addon{
+    height: 3em !important;
+    display: inline-flex !important;
+    align-items: center !important;
+}
+
+.filter{
+    width: 100% !important;
+    border-radius: 0px !important;
+    border-top-left-radius: 5px !important;
+    border-bottom-left-radius: 5px !important;
+    border: 1px solid lightgray !important;
+    -webkit-border-radius: 0px !important;
+    -moz-border-radius: 0px !important;
+    -ms-border-radius: 0px !important;
+    -o-border-radius: 0px !important;
+}
+
+
 /* Paginador */
 
 .pagination{
@@ -142,10 +261,10 @@
 }
 
 .btn-reload{
-    padding: 1em;
+    padding-top: 0.6em;
     background-color: #2196F3;    
-    display: flex;
     align-items: center;
+    height: 3em !important;
 }
 
 #crud-datatable-togdata-page, #crud-datatable-togdata-all{
@@ -158,19 +277,36 @@
     background-color: white !important;
 }
 
-.search_bar .form-control{
-    height: 3em;
+.form-control:first-child{
+    height: 3em !important;
+    border-radius: 5px !important;
+    -webkit-border-radius: 5px !important;
+    -moz-border-radius: 5px !important;
+    -ms-border-radius: 5px !important;
+    -o-border-radius: 5px !important;
+}
+.input-group{
+    width: 100% !important;
+    padding: 0 !important;
 }
 
-.search_bar{
-    margin: 1.5em;
-    width: 100%;
+.form-group{
+    width: 100% !important;
+    
 }
+
+
 
 .btn-pdf{
-    height: 3.5em;
+    height: 3em;
+    margin: 0 !important;
     background: #c80a0a;
    
+}
+
+.btn-add{
+    padding: 0.6em;
+    height: 3em;
 }
 
 .btn-pdf:hover{
@@ -180,7 +316,7 @@
 
 
 .btn-excel{
-    height: 3.5em;
+    height: 3em;
     background-color: rgba(16,124,65,1);
 }
 
@@ -202,11 +338,7 @@
 }
 
 .kv-panel-before{
-    height: 10em;
-    padding: 1.5em;
-    width: 100% !important;
-    box-shadow: 0 0 0 1px rgb(63 63 68 / 5%), 0 1px 2px 0 rgb(63 63 68 / 15%)!important;
-    background: #f5f5f5 !important;
+    display: none;
 
 }
 
@@ -225,3 +357,49 @@
 .select2-container .select2-selection--multiple{
     height: 3.3em;
 }
+
+
+@media (max-width: 768px) {
+    #formCrud{
+        height: 14em !important;
+        margin-left: 0em;
+        margin-right: 0em !important;
+    }
+
+    .help-block{
+        right: 20px;
+        top: 0;
+        position: absolute;
+}
+
+
+    .has-error .help-block, .has-error .control-label, .has-error .radio, .has-error .checkbox, .has-error .radio-inline, .has-error .checkbox-inline, .has-error.radio label, .has-error.checkbox label, .has-error.radio-inline label, .has-error.checkbox-inline label{
+        padding: 0.7em !important;
+    }
+
+
+  }
+
+  @media (max-width: 380px) {
+    #formCrud{
+        height: 18em !important;
+        margin-left: 0em;
+        margin-right: 0em !important;
+    }
+
+    .btn-add{
+        width: 100%;
+    }
+
+    .btn-reload{
+        width: 30%;
+    }
+    .btn-pdf{
+        width: 30%;
+    }
+    .btn-excel{
+        width: 30%;
+    }
+
+  }
+

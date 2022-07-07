@@ -10,17 +10,30 @@ return [
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'cedula',
-        'width' => '170px',
+        'width'=>'180px',
+        'filterInputOptions' => [
+            'class'       => 'form-control',
+            'placeholder' => 'Filtrar cédula...'
+        ],
+        'headerOptions' => ['style' => 'width:20%'],
     ],
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'name',
-        'width' => '300px'
+        'width' => '300px',
+        'filterInputOptions' => [
+            'class'       => 'form-control',
+            'placeholder' => 'Filtrar nombre...'
+         ]
     ],
     [
         'class' => '\kartik\grid\DataColumn',
         'attribute' => 'address',
         'width' => '200px',
+        'filterInputOptions' => [
+            'class'       => 'form-control',
+            'placeholder' => 'Filtrar dirección...'
+         ]
     ]/* ,
     [
         'class' => '\kartik\grid\DataColumn',
@@ -29,6 +42,7 @@ return [
     ], */,
      [
         'attribute' => 'rol',
+        
         'vAlign' => 'middle',
         'value' => function ($model, $key, $index, $widget) {
             $rol = [];
@@ -61,7 +75,7 @@ return [
         ],
         'filterInputOptions' => ['multiple' => true], // allows multiple authors to be chosen
         'format' => 'raw',
-        'width'=>'200px',
+        'width'=>'170px',
     ],
     // [
     // 'class'=>'\kartik\grid\DataColumn',
@@ -125,7 +139,7 @@ return [
             'data-confirm-title' => 'Are you sure?',
             'data-confirm-message' => 'Are you sure want to delete this item'
         ],
-        'width'=>'150px',
+        'width'=>'180px',
         
     ],
 
